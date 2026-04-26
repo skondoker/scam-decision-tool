@@ -76,7 +76,7 @@ export default function App() {
       <header className="app-header">
         <div className="header-content">
           <div className="header-title-block">
-            <h1 className="app-title">Scam Risk Analyzer</h1>
+            <h1 className="app-title">Decision Support Tool for Suspected Phishing Activity</h1>
             <p className="app-subtitle">
               GT CS 6727 · Human-Centered Phishing &amp; Social Engineering Framework
             </p>

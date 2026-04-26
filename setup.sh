@@ -3,7 +3,7 @@ set -e
 
 echo ""
 echo "=========================================="
-echo "  Scam Risk Analyzer — Setup"
+echo "  Decision Support Tool for Suspected Phishing Activity — Setup"
 echo "=========================================="
 echo ""
 
@@ -56,7 +56,7 @@ npm install
 # ── 4. Launch dev server ──────────────────────────────────────────────────────
 echo ""
 echo "=========================================="
-echo "  Starting Scam Risk Analyzer..."
+echo "  Starting Decision Support Tool for Suspected Phishing Activity..."
 echo "  Open http://localhost:5173 in your browser"
 echo "  Press Ctrl+C to stop"
 echo "=========================================="

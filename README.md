@@ -1,4 +1,4 @@
-# Scam Risk Analyzer
+# Decision Support Tool for Suspected Phishing Activity
 
 A human-centered decision-support tool for assessing phishing and social engineering risk in real time. Built for GT CS 6727 (Cybersecurity Practicum).
 
