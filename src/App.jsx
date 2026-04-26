@@ -98,7 +98,7 @@ export default function App() {
             <p>
               Answer 9 questions about this suspicious contact. The tool will assess risk
               using a formal 3-layer decision model, apply institutional rules, and give
-              you clear next steps - before you take any irreversible action.
+              you clear next steps, before you take any irreversible action.
             </p>
             <div className="intro-layers">
               <div className="intro-layer"><span className="intro-layer-icon">📡</span><span>Layer 1: Contact &amp; Identity</span></div>

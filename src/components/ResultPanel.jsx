@@ -45,15 +45,15 @@ const LAYER_LABELS = {
 };
 
 const Q_LABELS = {
-  q1: 'Q1 - Contact Modality',
-  q2: 'Q2 - Claimed Identity',
-  q3: 'Q3 - Initiated Contact',
-  q4: 'Q4 - Relationship Validity',
-  q5: 'Q5 - Personalization',
-  q6: 'Q6 - Pressure Signals',
-  q7: 'Q7 - Escalation',
-  q8: 'Q8 - Requested Actions',
-  q9: 'Q9 - Verification State',
+  q1: 'Q1: Contact Modality',
+  q2: 'Q2: Claimed Identity',
+  q3: 'Q3: Initiated Contact',
+  q4: 'Q4: Relationship Validity',
+  q5: 'Q5: Personalization',
+  q6: 'Q6: Pressure Signals',
+  q7: 'Q7: Escalation',
+  q8: 'Q8: Requested Actions',
+  q9: 'Q9: Verification State',
 };
 
 export default function ResultPanel({
@@ -113,7 +113,7 @@ export default function ResultPanel({
           </h2>
           <p className="result-section-desc">
             The following formal model conditions fired and determined the final risk level.
-            Conditions are evaluated in strict precedence order - the first condition that
+            Conditions are evaluated in strict precedence order: the first condition that
             fires sets the final result.
           </p>
           <div className="triggered-conditions-list">
@@ -146,7 +146,7 @@ export default function ResultPanel({
           <p className="result-section-desc">
             These rules are derived from official guidance by the FTC, IRS, SSA, FBI, NIST,
             and financial institutions. A legitimate entity will NEVER violate these rules.
-            Their presence is a hard override - no other condition can downgrade this to yellow
+            Their presence is a hard override: no other condition can downgrade this to yellow
             or green.
           </p>
           <div className="never-event-list">
@@ -250,7 +250,7 @@ export default function ResultPanel({
                   <span className="factor-dot" />
                   <div>
                     <strong>{f.label}</strong>
-                    <span className="factor-desc"> - {f.description}</span>
+                    <span className="factor-desc">: {f.description}</span>
                   </div>
                 </li>
               ))}
@@ -258,7 +258,7 @@ export default function ResultPanel({
           </div>
         ) : (
           <p className="no-factors">
-            No complexity factors detected - interaction appears structurally simple.
+            No complexity factors detected. Interaction appears structurally simple.
           </p>
         )}
         <div className="complexity-rubric">
@@ -357,7 +357,7 @@ export default function ResultPanel({
                       {qId && answers[qId.id] && (
                         <span className="signal-answer">
                           {' '}
-                          - answer scored RED by formal model
+                          (answer scored RED by formal model)
                         </span>
                       )}
                     </li>
@@ -376,7 +376,7 @@ export default function ResultPanel({
                     <strong>{Q_LABELS[key]}</strong>
                     <span className="signal-answer">
                       {' '}
-                      - answer scored YELLOW by formal model
+                      (answer scored YELLOW by formal model)
                     </span>
                   </li>
                 ))}

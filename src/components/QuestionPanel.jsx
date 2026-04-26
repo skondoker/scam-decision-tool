@@ -189,7 +189,7 @@ export default function QuestionPanel({
         {question.type === 'multi' && (
           <p className="multi-select-hint">
             {Array.isArray(currentAnswer) && currentAnswer.filter(v => v !== 'none' && v !== 'nothing').length > 0
-              ? `${currentAnswer.filter(v => v !== 'none' && v !== 'nothing').length} selected - select all that apply`
+              ? `${currentAnswer.filter(v => v !== 'none' && v !== 'nothing').length} selected: select all that apply`
               : 'Select all that apply, or choose "None of the above"'}
           </p>
         )}

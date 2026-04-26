@@ -388,7 +388,7 @@ function computeCautionSignalCount(answers) {
   }
   if (['basic','account','context'].includes(answers.personalization)) {
     count++;
-    signals.push('Personalization present - attacker may have accessed prior breach data');
+    signals.push('Personalization present: attacker may have accessed prior breach data');
   }
   if (hasPressure(answers,'urgency') || hasPressure(answers,'accountSuspension') ||
       hasPressure(answers,'financialLoss')) {
@@ -406,7 +406,7 @@ function computeCautionSignalCount(answers) {
   }
   if (answers.verificationState === 'notSure') {
     count++;
-    signals.push('Verification status unclear - independent check not yet attempted');
+    signals.push('Verification status unclear: independent check not yet attempted');
   }
 
   return { count, signals };
@@ -473,7 +473,7 @@ export function evaluateAssessment(answers) {
     finalRisk = 'red';
     triggeredConditions.push({
       rule: 'Never-Event Hard Override',
-      detail: `${triggeredNeverEvents.length} institutional never-event rule(s) triggered. This is an unconditional hard stop - no other condition can downgrade this result.`,
+      detail: `${triggeredNeverEvents.length} institutional never-event rule(s) triggered. This is an unconditional hard stop: no other condition can downgrade this result.`,
     });
   }
 
@@ -645,7 +645,7 @@ function generateIntervention(
       .forEach((c) => interventions.push(`Rule triggered - ${c.rule}: ${c.detail}`));
 
     // Global hard-stop next steps
-    nextSteps.push('Stop responding to this contact immediately - hang up or close the message');
+    nextSteps.push('Stop responding to this contact immediately: hang up or close the message');
     nextSteps.push('Do NOT send money, buy gift cards, or send cryptocurrency');
     nextSteps.push('Do NOT approve any MFA push notifications you did not personally initiate');
     nextSteps.push('Do NOT install any software or allow remote access to your device');
@@ -653,11 +653,11 @@ function generateIntervention(
     // Context-specific guidance based on claimed identity
     if (identity === 'bank') {
       nextSteps.push(
-        'Call your bank using the number on the back of your card or their official app - not any number from this contact'
+        'Call your bank using the number on the back of your card or their official app, not any number from this contact'
       );
     } else if (['irs', 'lawenforcement', 'ssa'].includes(identity)) {
       nextSteps.push(
-        'Contact the agency only through their official government website (IRS.gov, SSA.gov) - not via any number or link in this message'
+        'Contact the agency only through their official government website (IRS.gov, SSA.gov), not via any number or link in this message'
       );
       nextSteps.push('Report government impersonation to the Treasury Inspector General: 1-800-366-4484');
     } else if (identity === 'techsupport') {
@@ -666,7 +666,7 @@ function generateIntervention(
       );
     } else if (identity === 'romance') {
       nextSteps.push(
-        'Do not send money to someone you have only met online - regardless of how long you have communicated'
+        'Do not send money to someone you have only met online, regardless of how long you have communicated'
       );
       nextSteps.push('Call the AARP Fraud Watch Network: 1-877-908-3360');
     } else if (identity === 'crypto') {
@@ -675,7 +675,7 @@ function generateIntervention(
       );
     } else if (['employer', 'marketplace'].includes(identity)) {
       nextSteps.push(
-        'Call the person using a number from your company directory or prior known correspondence - not this message'
+        'Call the person using a number from your company directory or prior known correspondence, not this message'
       );
     }
 
@@ -694,7 +694,7 @@ function generateIntervention(
     );
 
     nextSteps.push(
-      'Pause the interaction - do not respond further until you verify through an official channel'
+      'Pause the interaction: do not respond further until you verify through an official channel'
     );
     nextSteps.push(
       'Do not use any links, phone numbers, or contact details from this message. Instead, find official contact information yourself (official website, app, card, or prior statement).'
@@ -720,7 +720,7 @@ function generateIntervention(
 
     nextSteps.push('Do not use any links, phone numbers, or attachments from this contact');
     nextSteps.push(
-      'Find the official contact information yourself - search engine, official app, or back of your card'
+      'Find the official contact information yourself: search engine, official app, or back of your card'
     );
     nextSteps.push(
       'Call back using an official number you found independently to confirm legitimacy'
@@ -738,7 +738,7 @@ function generateIntervention(
     );
 
     nextSteps.push(
-      'Remain alert - if anything changes or new pressure appears, re-run this assessment'
+      'Remain alert: if anything changes or new pressure appears, re-run this assessment'
     );
     nextSteps.push(
       'Verify the contact is who they say they are before sharing any sensitive information'
