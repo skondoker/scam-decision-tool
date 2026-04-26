@@ -1,10 +1,10 @@
-/**
+﻿/**
  * QuestionPanel.jsx
  * =================
  * One question at a time with real-time inline explanations.
  *
  * When the user selects any option, an explanation callout appears
- * immediately below that option — before they press Next.
+ * immediately below that option - before they press Next.
  * This ensures users get context even if they never finish the assessment.
  *
  * For single-select: shows explanation for the currently selected option.
@@ -171,7 +171,7 @@ export default function QuestionPanel({
                   />
                 </button>
 
-                {/* Inline explanation — shown immediately when this option is selected */}
+                {/* Inline explanation - shown immediately when this option is selected */}
                 {isSelected && option.explanation && option.value === explanationValue && (
                   <div className={`option-explanation explanation-${option.riskColor}`}>
                     <span className="explanation-icon">
@@ -189,7 +189,7 @@ export default function QuestionPanel({
         {question.type === 'multi' && (
           <p className="multi-select-hint">
             {Array.isArray(currentAnswer) && currentAnswer.filter(v => v !== 'none' && v !== 'nothing').length > 0
-              ? `${currentAnswer.filter(v => v !== 'none' && v !== 'nothing').length} selected — select all that apply`
+              ? `${currentAnswer.filter(v => v !== 'none' && v !== 'nothing').length} selected - select all that apply`
               : 'Select all that apply, or choose "None of the above"'}
           </p>
         )}

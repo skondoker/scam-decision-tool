@@ -1,14 +1,14 @@
-/**
+﻿/**
  * App.jsx
  * =======
- * Root component. All risk logic is delegated to evaluateAssessment() —
+ * Root component. All risk logic is delegated to evaluateAssessment() -
  * the single source of truth defined in the Formal Decision Model.
  *
  * evaluateAssessment() returns the complete result object including:
  *   finalRisk, questionRisk, layerRisk, complexityScore, triggeredNeverEvents,
  *   triggeredConditions, intervention
  *
- * These are passed directly to child components — no logic is computed here.
+ * These are passed directly to child components - no logic is computed here.
  */
 
 import React, { useState, useMemo } from 'react';
@@ -24,7 +24,7 @@ export default function App() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
 
-  // ── Single formal model evaluation — runs after every answer ─────────────
+  // ── Single formal model evaluation - runs after every answer ─────────────
   const assessment = useMemo(() => {
     if (Object.keys(answers).length === 0) return null;
     return evaluateAssessment(answers);
@@ -98,7 +98,7 @@ export default function App() {
             <p>
               Answer 9 questions about this suspicious contact. The tool will assess risk
               using a formal 3-layer decision model, apply institutional rules, and give
-              you clear next steps — before you take any irreversible action.
+              you clear next steps - before you take any irreversible action.
             </p>
             <div className="intro-layers">
               <div className="intro-layer"><span className="intro-layer-icon">📡</span><span>Layer 1: Contact &amp; Identity</span></div>
@@ -111,7 +111,7 @@ export default function App() {
 
       {/* Main layout */}
       <div className="app-body">
-        {/* Path tracker receives questionRisk and layerRisk from the engine — no UI-derived logic */}
+        {/* Path tracker receives questionRisk and layerRisk from the engine - no UI-derived logic */}
         <PathTracker
           answers={answers}
           currentQuestionIndex={isComplete ? QUESTIONS.length : currentQuestionIndex}

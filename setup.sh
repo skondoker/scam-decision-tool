@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 set -e
 
 echo ""
 echo "=========================================="
-echo "  Decision Support Tool for Suspected Phishing Activity — Setup"
+echo "  Decision Support Tool for Suspected Phishing Activity - Setup"
 echo "=========================================="
 echo ""
 

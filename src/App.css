@@ -1,5 +1,5 @@
-/* ============================================================
-   App.css — Scam Decision-Support Tool
+﻿/* ============================================================
+   App.css - Scam Decision-Support Tool
    GT CS 6727 Practicum · Human-Centered Phishing Framework
    ============================================================ */
 
@@ -691,14 +691,14 @@ body {
 .dot-tiny.dot-red    { background: var(--red); }
 .dot-tiny.dot-gray   { background: var(--gray-300); }
 
-/* Option wrapper — holds button + explanation together */
+/* Option wrapper - holds button + explanation together */
 .option-wrapper {
   display: flex;
   flex-direction: column;
   gap: 0;
 }
 
-/* Inline explanation callout — appears immediately when option is selected */
+/* Inline explanation callout - appears immediately when option is selected */
 .option-explanation {
   display: flex;
   align-items: flex-start;

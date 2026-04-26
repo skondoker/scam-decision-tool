@@ -1,11 +1,11 @@
-/**
+﻿/**
  * PathTracker.jsx
  * ===============
  * Visual path tracker sidebar.
  *
  * IMPORTANT: All node colors come directly from the engine's questionRisk and
  * layerRisk outputs (computed by evaluateAssessment in riskEngine.js).
- * This component does NOT compute or infer any risk logic — it only renders
+ * This component does NOT compute or infer any risk logic - it only renders
  * what the formal decision model has already determined.
  *
  * Per-question node colors:
@@ -126,7 +126,7 @@ export default function PathTracker({
                   const isCurrent = qIdx === currentQuestionIndex && !isComplete;
                   const isPending = qIdx > currentQuestionIndex && !isComplete;
 
-                  // Color from engine's questionRisk — NOT computed locally
+                  // Color from engine's questionRisk - NOT computed locally
                   const engineKey = Q_ID_TO_KEY[question.id];
                   const engineColor = questionRisk[engineKey];
 

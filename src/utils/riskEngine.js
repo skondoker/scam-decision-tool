@@ -1,10 +1,10 @@
-/**
+﻿/**
  * riskEngine.js
  * =============
- * FINAL DECISION MODEL — Single Source of Truth
- * Source: "Final Decision Model.docx" — CS 6727 Practicum
+ * FINAL DECISION MODEL - Single Source of Truth
+ * Source: "Final Decision Model.docx" - CS 6727 Practicum
  *
- * Evaluation order (STRICT — DO NOT REORDER):
+ * Evaluation order (STRICT - DO NOT REORDER):
  *   Step 1:  Evaluate ALL never-event rules          → if any fire, finalRisk = RED (hard override)
  *   Step 2:  Compute per-question risk (Q1–Q9)
  *   Step 3:  Compute layer-level risk (worst-of-layer)
@@ -41,7 +41,7 @@ function hasEscalation(answers, x) {
   return getArr(answers.escalation).includes(x);
 }
 
-// ─── Grouped Conditions (Final Decision Model — exactly as defined) ───────────
+// ─── Grouped Conditions (Final Decision Model - exactly as defined) ───────────
 function IS_IRS(a)        { return a.claimedIdentity === 'irs'; }
 function IS_SSA(a)        { return a.claimedIdentity === 'ssa'; }
 function IS_LE(a)         { return a.claimedIdentity === 'lawenforcement'; }
@@ -234,7 +234,7 @@ const NEVER_EVENT_RULES = [
   //   },
   // },
 
-  // IRS — SMS requesting action
+  // IRS - SMS requesting action
 {
   id: 'ne_irs_sms_action',
   title: 'IRS Text Message Requesting Action',
@@ -253,7 +253,7 @@ const NEVER_EVENT_RULES = [
   },
 },
 
-// SSA — SMS requesting action
+// SSA - SMS requesting action
 {
   id: 'ne_ssa_sms_action',
   title: 'SSA Text Message Requesting Sensitive Information or Payment',
@@ -285,7 +285,7 @@ const NEVER_EVENT_RULES = [
   },
 },
 
-// Law enforcement — SMS requesting action
+// Law enforcement - SMS requesting action
 {
   id: 'ne_le_sms_action',
   title: 'Law Enforcement Text Message Requesting Action',
@@ -333,7 +333,7 @@ const NEVER_EVENT_RULES = [
 ];
 
 
-// ─── Signal Count Functions (Final Decision Model — explicit counts) ───────────
+// ─── Signal Count Functions (Final Decision Model - explicit counts) ───────────
 
 /**
  * highRiskSignalCount
@@ -388,7 +388,7 @@ function computeCautionSignalCount(answers) {
   }
   if (['basic','account','context'].includes(answers.personalization)) {
     count++;
-    signals.push('Personalization present — attacker may have accessed prior breach data');
+    signals.push('Personalization present - attacker may have accessed prior breach data');
   }
   if (hasPressure(answers,'urgency') || hasPressure(answers,'accountSuspension') ||
       hasPressure(answers,'financialLoss')) {
@@ -406,7 +406,7 @@ function computeCautionSignalCount(answers) {
   }
   if (answers.verificationState === 'notSure') {
     count++;
-    signals.push('Verification status unclear — independent check not yet attempted');
+    signals.push('Verification status unclear - independent check not yet attempted');
   }
 
   return { count, signals };
@@ -417,7 +417,7 @@ function computeCautionSignalCount(answers) {
 /**
  * evaluateAssessment(answers)
  *
- * Single source of truth. Deterministic — same inputs always produce same outputs.
+ * Single source of truth. Deterministic - same inputs always produce same outputs.
  *
  * @param {Object} answers
  * @returns {{
@@ -473,7 +473,7 @@ export function evaluateAssessment(answers) {
     finalRisk = 'red';
     triggeredConditions.push({
       rule: 'Never-Event Hard Override',
-      detail: `${triggeredNeverEvents.length} institutional never-event rule(s) triggered. This is an unconditional hard stop — no other condition can downgrade this result.`,
+      detail: `${triggeredNeverEvents.length} institutional never-event rule(s) triggered. This is an unconditional hard stop - no other condition can downgrade this result.`,
     });
   }
 
@@ -492,7 +492,7 @@ export function evaluateAssessment(answers) {
       if (IS_MFA(answers))        what.push('MFA approval/sharing');
       if (IS_REMOTE(answers))     what.push('remote access installation');
       triggeredConditions.push({
-        rule: 'High-Risk Combination — Irreversible Action in High-Risk Context',
+        rule: 'High-Risk Combination - Irreversible Action in High-Risk Context',
         detail: `An irreversible action (${what.join(', ')}) is being requested within a high-risk contact context (unsolicited contact, no prior relationship, or high-risk claimed identity). The framework mandates a hard stop when these conditions co-occur, because the combination represents a near-certain harm boundary.`,
       });
     }
@@ -504,7 +504,7 @@ export function evaluateAssessment(answers) {
       finalRisk = 'red';
       triggeredConditions.push({
         rule: 'Irreversible Action Requested (Q8 = RED)',
-        detail: 'The selected action(s) include credential disclosure, MFA approval/sharing, financial transfer, or remote access — all of which are irreversible harm boundaries. Once taken, these actions cannot be undone.',
+        detail: 'The selected action(s) include credential disclosure, MFA approval/sharing, financial transfer, or remote access - all of which are irreversible harm boundaries. Once taken, these actions cannot be undone.',
       });
     }
     if (questionRisk.q9 === 'red') {
@@ -521,7 +521,7 @@ export function evaluateAssessment(answers) {
   //   finalRisk = 'red';
   //   triggeredConditions.push({
   //     rule: `High-Risk Signal Aggregation (count = ${highRiskSignals.count}/5)`,
-  //     detail: `${highRiskSignals.count} independent high-risk conditions detected simultaneously: ${highRiskSignals.signals.join('; ')}. When two or more high-risk signals co-occur, the framework mandates a hard stop — the combination indicates systemic manipulation across multiple dimensions.`,
+  //     detail: `${highRiskSignals.count} independent high-risk conditions detected simultaneously: ${highRiskSignals.signals.join('; ')}. When two or more high-risk signals co-occur, the framework mandates a hard stop - the combination indicates systemic manipulation across multiple dimensions.`,
   //   });
   // }
 
@@ -622,7 +622,7 @@ function generateIntervention(
   // Rules that represent explicit “hard boundary” conditions (not just aggregation)
   const HARD_STOP_RULES = new Set([
     'Never-Event Hard Override',
-    'High-Risk Combination — Irreversible Action in High-Risk Context',
+    'High-Risk Combination - Irreversible Action in High-Risk Context',
     'Irreversible Action Requested (Q8 = RED)',
     'Verification Blocked (Q9 = RED)',
   ]);
@@ -642,10 +642,10 @@ function generateIntervention(
     // Then any explicit RED conditions (except the meta “Never-Event Hard Override”)
     triggeredConditions
       .filter((c) => c.rule !== 'Never-Event Hard Override')
-      .forEach((c) => interventions.push(`Rule triggered — ${c.rule}: ${c.detail}`));
+      .forEach((c) => interventions.push(`Rule triggered - ${c.rule}: ${c.detail}`));
 
     // Global hard-stop next steps
-    nextSteps.push('Stop responding to this contact immediately — hang up or close the message');
+    nextSteps.push('Stop responding to this contact immediately - hang up or close the message');
     nextSteps.push('Do NOT send money, buy gift cards, or send cryptocurrency');
     nextSteps.push('Do NOT approve any MFA push notifications you did not personally initiate');
     nextSteps.push('Do NOT install any software or allow remote access to your device');
@@ -653,20 +653,20 @@ function generateIntervention(
     // Context-specific guidance based on claimed identity
     if (identity === 'bank') {
       nextSteps.push(
-        'Call your bank using the number on the back of your card or their official app — not any number from this contact'
+        'Call your bank using the number on the back of your card or their official app - not any number from this contact'
       );
     } else if (['irs', 'lawenforcement', 'ssa'].includes(identity)) {
       nextSteps.push(
-        'Contact the agency only through their official government website (IRS.gov, SSA.gov) — not via any number or link in this message'
+        'Contact the agency only through their official government website (IRS.gov, SSA.gov) - not via any number or link in this message'
       );
       nextSteps.push('Report government impersonation to the Treasury Inspector General: 1-800-366-4484');
     } else if (identity === 'techsupport') {
       nextSteps.push(
-        "Contact tech support through the company's official website only — never call a number shown in a pop-up"
+        "Contact tech support through the company's official website only - never call a number shown in a pop-up"
       );
     } else if (identity === 'romance') {
       nextSteps.push(
-        'Do not send money to someone you have only met online — regardless of how long you have communicated'
+        'Do not send money to someone you have only met online - regardless of how long you have communicated'
       );
       nextSteps.push('Call the AARP Fraud Watch Network: 1-877-908-3360');
     } else if (identity === 'crypto') {
@@ -675,7 +675,7 @@ function generateIntervention(
       );
     } else if (['employer', 'marketplace'].includes(identity)) {
       nextSteps.push(
-        'Call the person using a number from your company directory or prior known correspondence — not this message'
+        'Call the person using a number from your company directory or prior known correspondence - not this message'
       );
     }
 
@@ -686,7 +686,7 @@ function generateIntervention(
       'Multiple high-risk signals are present at the same time. While no single “never event” rule has fired, the overall pattern is strongly consistent with a scam. Treat this interaction as very high risk and verify independently before taking any action.';
 
     triggeredConditions.forEach((c) => {
-      interventions.push(`Caution: ${c.rule} — ${c.detail}`);
+      interventions.push(`Caution: ${c.rule} - ${c.detail}`);
     });
 
     interventions.push(
@@ -694,7 +694,7 @@ function generateIntervention(
     );
 
     nextSteps.push(
-      'Pause the interaction — do not respond further until you verify through an official channel'
+      'Pause the interaction - do not respond further until you verify through an official channel'
     );
     nextSteps.push(
       'Do not use any links, phone numbers, or contact details from this message. Instead, find official contact information yourself (official website, app, card, or prior statement).'
@@ -711,7 +711,7 @@ function generateIntervention(
       'Caution signals are present. This contact has not triggered a hard stop, but independent verification is required before taking any action.';
 
     triggeredConditions.forEach((c) => {
-      interventions.push(`Caution: ${c.rule} — ${c.detail}`);
+      interventions.push(`Caution: ${c.rule} - ${c.detail}`);
     });
 
     interventions.push(
@@ -720,7 +720,7 @@ function generateIntervention(
 
     nextSteps.push('Do not use any links, phone numbers, or attachments from this contact');
     nextSteps.push(
-      'Find the official contact information yourself — search engine, official app, or back of your card'
+      'Find the official contact information yourself - search engine, official app, or back of your card'
     );
     nextSteps.push(
       'Call back using an official number you found independently to confirm legitimacy'
@@ -738,7 +738,7 @@ function generateIntervention(
     );
 
     nextSteps.push(
-      'Remain alert — if anything changes or new pressure appears, re-run this assessment'
+      'Remain alert - if anything changes or new pressure appears, re-run this assessment'
     );
     nextSteps.push(
       'Verify the contact is who they say they are before sharing any sensitive information'

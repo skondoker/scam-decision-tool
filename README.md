@@ -1,18 +1,18 @@
-# Decision Support Tool for Suspected Phishing Activity
+﻿# Decision Support Tool for Suspected Phishing Activity
 
 A human-centered decision-support tool for assessing phishing and social engineering risk in real time. Built for GT CS 6727 (Cybersecurity Practicum).
 
-The tool walks users through 9 questions across a formal 3-layer framework and produces an immediate risk verdict with actionable next steps — before any irreversible action is taken.
+The tool walks users through 9 questions across a formal 3-layer framework and produces an immediate risk verdict with actionable next steps - before any irreversible action is taken.
 
 ---
 
 ## How It Works
 
-**Layer 1 — Contact & Identity**: Who is contacting you, how, and do you have a real relationship with them?
+**Layer 1 - Contact & Identity**: Who is contacting you, how, and do you have a real relationship with them?
 
-**Layer 2 — Pressure & Tactics**: What urgency, threats, or manipulation tactics are present?
+**Layer 2 - Pressure & Tactics**: What urgency, threats, or manipulation tactics are present?
 
-**Layer 3 — Requested Actions**: What is being asked of you — and is it reversible?
+**Layer 3 - Requested Actions**: What is being asked of you - and is it reversible?
 
 The risk engine checks answers against a set of institutional "never event" rules (e.g., no legitimate entity ever asks for gift card payment or MFA codes) and computes a final risk level: **Low**, **Medium**, **High**, or an immediate **Hard Stop**.
 
@@ -27,7 +27,7 @@ The risk engine checks answers against a set of institutional "never event" rule
 
 ## Quick Start
 
-### Option 1 — Automated setup (Mac/Linux/Git Bash on Windows)
+### Option 1 - Automated setup (Mac/Linux/Git Bash on Windows)
 
 ```bash
 bash setup.sh
@@ -35,7 +35,7 @@ bash setup.sh
 
 This script checks for Node.js, installs dependencies, and launches the app automatically.
 
-### Option 2 — Manual setup
+### Option 2 - Manual setup
 
 ```bash
 # 1. Install dependencies
