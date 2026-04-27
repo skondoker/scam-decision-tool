@@ -1,51 +1,39 @@
-﻿# Decision Support Tool for Suspected Phishing Activity
+# Decision Support Tool for Suspected Phishing Activity
 
-A human-centered decision-support tool for assessing phishing and social engineering risk in real time. Built for GT CS 6727 (Cybersecurity Practicum).
+GT CS 6727 Practicum project. The idea is to give someone a quick structured way to assess whether a contact (call, text, email, pop-up) is a scam before they do something they can't undo.
 
-The tool walks users through 9 questions across a formal 3-layer framework and produces an immediate risk verdict with actionable next steps, before any irreversible action is taken.
-
----
-
-## How It Works
-
-**Layer 1: Contact & Identity**: Who is contacting you, how, and do you have a real relationship with them?
-
-**Layer 2: Pressure & Tactics**: What urgency, threats, or manipulation tactics are present?
-
-**Layer 3: Requested Actions**: What is being asked of you, and is it reversible?
-
-The risk engine checks answers against a set of institutional "never event" rules (e.g., no legitimate entity ever asks for gift card payment or MFA codes) and computes a final risk level: **Low**, **Medium**, **High**, or an immediate **Hard Stop**.
+It asks 9 questions across 3 layers — who's contacting you, what tactics they're using, and what they're asking you to do — and spits out a risk level with specific next steps.
 
 ---
 
-## Requirements
+## The 3 Layers
 
-- [Node.js](https://nodejs.org/) v18 or higher
-- npm (included with Node.js)
+**Layer 1 - Contact & Identity**: How did they reach you? Who do they claim to be? Did you initiate this? Is the relationship real?
+
+**Layer 2 - Pressure & Tactics**: Are there urgency threats, secrecy demands, stay-on-the-line instructions, or other manipulation signals?
+
+**Layer 3 - Requested Actions**: What do they want you to do? Anything irreversible (gift cards, wire transfer, MFA approval, remote access, SSN) is a hard stop.
+
+The engine checks your answers against ~80 institutional "never event" rules pulled from official guidance by the FTC, IRS, SSA, FBI, Apple, Google, Microsoft, USPS, FedEx, UPS, Amazon, Walmart, and the ABA. Each triggered rule shows a direct link to the actual source so you can read it yourself.
 
 ---
 
-## Quick Start
+## Running It
 
-### Option 1: Automated setup (Mac/Linux/Git Bash on Windows)
+You need Node.js 18+.
 
 ```bash
-bash setup.sh
-```
-
-This script checks for Node.js, installs dependencies, and launches the app automatically.
-
-### Option 2: Manual setup
-
-```bash
-# 1. Install dependencies
 npm install
-
-# 2. Start the development server
 npm run dev
 ```
 
-Then open your browser to the local URL shown in the terminal (usually `http://localhost:5173`).
+Open `http://localhost:5173` in your browser.
+
+To build for production:
+
+```bash
+npm run build
+```
 
 ---
 
@@ -54,33 +42,19 @@ Then open your browser to the local URL shown in the terminal (usually `http://l
 ```
 src/
   data/
-    questions.js        # All 9 questions, options, and per-option risk colors
+    questions.js       # the 9 questions, grouped options, risk colors, explanations
   utils/
-    riskEngine.js       # Formal decision model: scoring, never-event rules, archetypes
+    riskEngine.js      # all the scoring logic, never-event rules, archetype detection
   components/
-    QuestionPanel.jsx   # Question display and answer selection
-    PathTracker.jsx     # Sidebar showing progress and per-layer risk state
-    RiskIndicator.jsx   # Live risk level badge in the header
-    ResultPanel.jsx     # Final verdict, intervention guidance, and breakdown
-  App.jsx               # Root component and state management
-  main.jsx              # Entry point
-index.html
-vite.config.js
+    QuestionPanel.jsx  # renders each question, handles grouped option layouts
+    PathTracker.jsx    # sidebar progress tracker, colors from engine output only
+    RiskIndicator.jsx  # live risk badge in the header
+    ResultPanel.jsx    # final result, triggered rules, citation links, next steps
+  App.jsx              # state management, wires everything together
 ```
 
 ---
 
-## Available Scripts
+## Context
 
-| Command | Description |
-|---|---|
-| `npm run dev` | Start local development server |
-| `npm run build` | Build for production (outputs to `dist/`) |
-| `npm run preview` | Preview the production build locally |
-
----
-
-## Tech Stack
-
-- [React 18](https://react.dev/)
-- [Vite 5](https://vitejs.dev/)
+This is part of the practicum component for CS 6727 at Georgia Tech. The formal decision model and institutional rule set are documented in the accompanying IEEE report. The never-event rules in `riskEngine.js` map 1-to-1 to the normalized rules in Appendix C of that report.
