@@ -38,12 +38,18 @@ function truncate(str, maxLen) {
   return str.length > maxLen ? str.slice(0, maxLen) + '…' : str;
 }
 
+function getAllOptions(question) {
+  if (question.optionGroups) return question.optionGroups.flatMap(g => g.options);
+  return question.options || [];
+}
+
 /** Get display label for a given answer to show inline in the path */
 function getAnswerLabel(question, answer) {
   if (!answer) return null;
+  const opts = getAllOptions(question);
 
   if (question.type === 'single') {
-    const opt = question.options.find(o => o.value === answer);
+    const opt = opts.find(o => o.value === answer);
     return opt ? truncate(opt.label, 40) : answer;
   }
 
@@ -52,7 +58,7 @@ function getAnswerLabel(question, answer) {
     if (answer.includes('none') && answer.length === 1) return 'None selected';
     const filtered = answer.filter(v => v !== 'none' && v !== 'nothing');
     const labels = filtered.map(v => {
-      const opt = question.options.find(o => o.value === v);
+      const opt = opts.find(o => o.value === v);
       return opt ? truncate(opt.label, 28) : v;
     });
     if (labels.length === 0) return 'Nothing selected';

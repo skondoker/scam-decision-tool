@@ -1,17 +1,9 @@
-﻿/**
+/**
  * QuestionPanel.jsx
  * =================
  * One question at a time with real-time inline explanations.
- *
- * When the user selects any option, an explanation callout appears
- * immediately below that option - before they press Next.
- * This ensures users get context even if they never finish the assessment.
- *
- * For single-select: shows explanation for the currently selected option.
- * For multi-select:  shows explanation for the most recently toggled option,
- *                    plus a summary count of all selected items.
- *
- * Explanation callout is color-coded to match the option's riskColor.
+ * Supports both flat `options` arrays and grouped `optionGroups` arrays.
+ * When `optionGroups` is present, each group renders a header label above its options.
  */
 
 import React, { useState } from 'react';
@@ -36,24 +28,23 @@ export default function QuestionPanel({
   const isLast = currentQuestionIndex === QUESTIONS.length - 1;
   const currentAnswer = answers[question.id];
 
-  // Track the most recently clicked option for multi-select explanation display
   const [lastClickedValue, setLastClickedValue] = useState(null);
 
-  // Reset last clicked when question changes
-  const questionKey = question.id;
+  // Flatten optionGroups or use flat options array
+  const allOptions = question.optionGroups
+    ? question.optionGroups.flatMap(g => g.options)
+    : question.options;
 
   const hasAnswer =
     question.type === 'single'
       ? Boolean(currentAnswer)
       : Array.isArray(currentAnswer) && currentAnswer.length > 0;
 
-  // ── Single select ──────────────────────────────────────────────────────────
   function handleSingleSelect(value) {
     onAnswer(question.id, value);
     setLastClickedValue(value);
   }
 
-  // ── Multi select ───────────────────────────────────────────────────────────
   function handleMultiToggle(value) {
     const prev = Array.isArray(currentAnswer) ? currentAnswer : [];
 
@@ -71,7 +62,6 @@ export default function QuestionPanel({
     let next = prev.filter(v => v !== 'none' && v !== 'nothing');
     if (next.includes(value)) {
       next = next.filter(v => v !== value);
-      // If deselecting, show explanation for a still-selected item if any
       setLastClickedValue(next.length > 0 ? next[next.length - 1] : null);
     } else {
       next = [...next, value];
@@ -86,9 +76,6 @@ export default function QuestionPanel({
     Array.isArray(currentAnswer) &&
     (currentAnswer.includes('none') || currentAnswer.includes('nothing'));
 
-  // ── Which option's explanation to show ────────────────────────────────────
-  // Single: the selected option
-  // Multi: the last clicked option (or first selected if none clicked yet)
   const explanationValue =
     question.type === 'single'
       ? currentAnswer
@@ -96,9 +83,66 @@ export default function QuestionPanel({
         ? lastClickedValue
         : getArr(currentAnswer).filter(v => v !== 'none' && v !== 'nothing')[0] ?? null;
 
-  const explanationOption = question.options.find(o => o.value === explanationValue);
+  const explanationOption = allOptions.find(o => o.value === explanationValue);
 
   const progress = (currentQuestionIndex / QUESTIONS.length) * 100;
+
+  // Renders a single option button (shared between grouped and flat rendering)
+  function renderOption(option) {
+    const isSelected =
+      question.type === 'single'
+        ? currentAnswer === option.value
+        : Array.isArray(currentAnswer) && currentAnswer.includes(option.value);
+
+    const isDisabled =
+      question.type === 'multi' &&
+      isMultiNoneSelected &&
+      option.value !== 'none' &&
+      option.value !== 'nothing';
+
+    return (
+      <div key={option.value} className="option-wrapper">
+        <button
+          className={[
+            'option-btn',
+            isSelected ? `option-selected option-selected-${option.riskColor}` : '',
+            isDisabled ? 'option-disabled' : '',
+          ].filter(Boolean).join(' ')}
+          onClick={() =>
+            question.type === 'single'
+              ? handleSingleSelect(option.value)
+              : handleMultiToggle(option.value)
+          }
+          disabled={isDisabled}
+          aria-pressed={isSelected}
+        >
+          <span className="option-selector">
+            {question.type === 'single' ? (
+              <span className={`radio-circle ${isSelected ? 'radio-filled' : ''}`} />
+            ) : (
+              <span className={`checkbox-box ${isSelected ? 'checkbox-checked' : ''}`}>
+                {isSelected && <span>✓</span>}
+              </span>
+            )}
+          </span>
+          <span className="option-label">{option.label}</span>
+          <span
+            className={`option-risk-dot dot-tiny dot-${option.riskColor}`}
+            title={`Risk signal: ${option.riskColor}`}
+          />
+        </button>
+
+        {isSelected && option.explanation && option.value === explanationValue && (
+          <div className={`option-explanation explanation-${option.riskColor}`}>
+            <span className="explanation-icon">
+              {option.riskColor === 'red' ? '⚠️' : option.riskColor === 'yellow' ? 'ℹ️' : '✓'}
+            </span>
+            <p>{option.explanation}</p>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="question-panel">
@@ -124,65 +168,17 @@ export default function QuestionPanel({
           <p className="question-help">{question.helpText}</p>
         )}
 
-        {/* Options */}
+        {/* Options — grouped or flat */}
         <div className="options-list">
-          {question.options.map(option => {
-            const isSelected =
-              question.type === 'single'
-                ? currentAnswer === option.value
-                : Array.isArray(currentAnswer) && currentAnswer.includes(option.value);
-
-            const isDisabled =
-              question.type === 'multi' &&
-              isMultiNoneSelected &&
-              option.value !== 'none' &&
-              option.value !== 'nothing';
-
-            return (
-              <div key={option.value} className="option-wrapper">
-                {/* The button itself */}
-                <button
-                  className={[
-                    'option-btn',
-                    isSelected ? `option-selected option-selected-${option.riskColor}` : '',
-                    isDisabled ? 'option-disabled' : '',
-                  ].filter(Boolean).join(' ')}
-                  onClick={() =>
-                    question.type === 'single'
-                      ? handleSingleSelect(option.value)
-                      : handleMultiToggle(option.value)
-                  }
-                  disabled={isDisabled}
-                  aria-pressed={isSelected}
-                >
-                  <span className="option-selector">
-                    {question.type === 'single' ? (
-                      <span className={`radio-circle ${isSelected ? 'radio-filled' : ''}`} />
-                    ) : (
-                      <span className={`checkbox-box ${isSelected ? 'checkbox-checked' : ''}`}>
-                        {isSelected && <span>✓</span>}
-                      </span>
-                    )}
-                  </span>
-                  <span className="option-label">{option.label}</span>
-                  <span
-                    className={`option-risk-dot dot-tiny dot-${option.riskColor}`}
-                    title={`Risk signal: ${option.riskColor}`}
-                  />
-                </button>
-
-                {/* Inline explanation - shown immediately when this option is selected */}
-                {isSelected && option.explanation && option.value === explanationValue && (
-                  <div className={`option-explanation explanation-${option.riskColor}`}>
-                    <span className="explanation-icon">
-                      {option.riskColor === 'red' ? '⚠️' : option.riskColor === 'yellow' ? 'ℹ️' : '✓'}
-                    </span>
-                    <p>{option.explanation}</p>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          {question.optionGroups
+            ? question.optionGroups.map(group => (
+                <div key={group.label} className="option-group">
+                  <div className="option-group-label">{group.label}</div>
+                  {group.options.map(option => renderOption(option))}
+                </div>
+              ))
+            : question.options.map(option => renderOption(option))
+          }
         </div>
 
         {/* Multi-select hint */}
